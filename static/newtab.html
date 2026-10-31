@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Putaway</title>
+    <link rel="icon" href="icons/32.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="#shelf"><img src="icons/48.png" alt="" width="30" height="30" />Putaway</a>
+      <nav id="nav" aria-label="Main">
+        <a href="#shelf" data-view="shelf">Shelf</a>
+        <a href="#library" data-view="library">Library</a>
+        <a href="#recap" data-view="recap">Recap</a>
+        <a href="#settings" data-view="settings">Settings</a>
+      </nav>
+    </header>
+    <div id="update"></div>
+    <main id="app"></main>
+    <dialog id="dialog"></dialog>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="newtab.js"></script>
+  </body>
+</html>

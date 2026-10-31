@@ -1,0 +1,71 @@
+{
+  "manifest_version": 3,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvMp5bnMtPxp++VkoAoIvsSmDHmjdJ+/JQ0n8MUKv8nzpJ18AazNGJrujV/ypkeoCAC22OnNFfjUAdI5vErMH3BdOor0SfYVljrWBG3zsBYKqQnBsmUZ7HSSovTZIUMq+Fn6mg0B0ZWBjzFJ74VhjE/F87btCWNPbg/oDrgXkaGsnWiUSZdsOuEHuKDZf44TRU7m3UYFFgLYtMJB9DyFoM/8fvurOTal/ZpmUS1+ziScE9LdmtbPatVWpD8FPwZsDGY6S9ttZuGCkCe21EEcio0mIFA6IqZAiZdjwJrUQFwpKA2tRsmiAjiizcGfTadFK8CH52twXVnu9waTzzwkL7wIDAQAB",
+  "name": "Putaway",
+  "version": "0.1.0",
+  "description": "Close every tab. Get it all back. A private, on-device memory for your browser.",
+  "minimum_chrome_version": "121",
+  "incognito": "not_allowed",
+  "permissions": [
+    "tabs",
+    "tabGroups",
+    "storage",
+    "unlimitedStorage",
+    "offscreen",
+    "alarms",
+    "history",
+    "scripting",
+    "webNavigation",
+    "webRequest",
+    "favicon"
+  ],
+  "host_permissions": [
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Putaway",
+    "default_icon": {
+      "16": "icons/16.png",
+      "32": "icons/32.png",
+      "48": "icons/48.png"
+    }
+  },
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
+  "commands": {
+    "put-away-window": {
+      "suggested_key": {
+        "default": "Alt+Shift+P"
+      },
+      "description": "Put away every tab in this window"
+    }
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+  }
+}
