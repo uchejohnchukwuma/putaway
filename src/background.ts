@@ -60,10 +60,15 @@ async function markGone(tabId: number, url: string) {
   const gone = await goneUrls();
   gone[tabId] = url;
   await chrome.storage.session.set({ gone });
-  if (isWeb(url) && (await db.get<Page>('pages', normalizeUrl(url)))?.text) {
-    await chrome.action.setBadgeBackgroundColor({ tabId, color: '#d93a00' });
-    await chrome.action.setBadgeText({ tabId, text: '!' });
-  }
+  await showGoneBadge(tabId);
+}
+
+/** The browser wipes per-tab badges on commit, so this also runs after each load. */
+async function showGoneBadge(tabId: number) {
+  const url = (await goneUrls())[tabId];
+  if (!isWeb(url) || !(await db.get<Page>('pages', normalizeUrl(url)))?.text) return;
+  await chrome.action.setBadgeBackgroundColor({ tabId, color: '#d93a00' });
+  await chrome.action.setBadgeText({ tabId, text: '!' });
 }
 
 async function clearGone(tabId: number) {
@@ -382,6 +387,10 @@ chrome.runtime.onMessage.addListener((msg, sender, reply) => {
 
 chrome.webNavigation.onBeforeNavigate.addListener(({ frameId, tabId }) => {
   if (frameId === 0) clearGone(tabId);
+});
+
+chrome.webNavigation.onCompleted.addListener(({ frameId, tabId }) => {
+  if (frameId === 0) showGoneBadge(tabId);
 });
 
 chrome.webNavigation.onErrorOccurred.addListener(({ frameId, tabId, url, error }) => {

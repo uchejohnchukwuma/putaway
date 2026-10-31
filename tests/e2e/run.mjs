@@ -330,8 +330,7 @@ await test('page rescue: a deleted page keeps its saved copy', async () => {
   await sleep(500);
   const saved = await idb('pages', url('/doomed'));
   assert(saved.text.includes('ten year limited warranty'), '404 replaced the good copy');
-  const badge = await ext.evaluate((id) => chrome.action.getBadgeText({ tabId: id }), tabId);
-  assert(badge === '!', `badge "${badge}"`);
+  await until(async () => (await ext.evaluate((id) => chrome.action.getBadgeText({ tabId: id }), tabId)) === '!', 'badge not shown', 3000);
   await p.close();
 });
 
